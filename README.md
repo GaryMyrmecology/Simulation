@@ -41,3 +41,19 @@ newout.Hansen<-runSurface(tree_surface.3, newsim.Hansen$dat)
 newout.BM<-runSurface(tree_surface.3, newsim.BM$dat)
 newsum.Hansen<-surfaceSummary(newout.Hansen$bwd)
 newsum.BM<-surfaceSummary(newout.BM$bwd)
+#for the for loop for kprime_sims
+library(surface)
+kprime_sims <- rep(NA, 99)
+for (rep_index in seq_along(kprime_sims)) {
+    simulated_data <- surfaceSimulate(tree_surface.3, type="hansen-fit", hansenfit=fwd.3[[k.3]]$fit,shifts=fwd.3[[k.3]]$savedshifts,  sample_optima=TRUE, no_nested = TRUE, optima_type="even")
+    surface_output <- runSurface(tree_surface.3, simulated_data$data)
+    kprime_sims[rep_index] <- surface_output$bwd$n_regimes["kprime", 2]
+}
+#for the for  loop for kprime_conv_sims 
+library(surface)
+kprime_conv_sims <- rep(NA, 10)
+for (rep_index in seq_along(kprime_conv_sims)) {
+    simulated_data <- surfaceSimulate(tree_surface.3, type="hansen-fit", hansenfit=fwd.3[[k.3]]$fit,shifts=fwd.3[[k.3]]$savedshifts,  sample_optima=TRUE, no_nested = TRUE, optima_type="even")
+    surface_output <- runSurface(tree_surface.3, simulated_data$data)
+    kprime_conv_sims[rep_index] <- surface_output$bwd$n_regimes["kprime_conv", 2]
+}
